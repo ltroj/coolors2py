@@ -11,8 +11,28 @@ from collections import namedtuple
 
 
 def load_palette(palette_file):
-    """Returns a named tuple. Access via .ext_arr, .names, . hex, .rgb, .cmyk, 
-    .hsb, .hsl, .lab."""
+    """
+    Reads a *.txt file exported from coolors [download from coolors.co via Expo
+    rt palette --> Code] and returns a named tuple.
+    
+    Access values via .ext_arr, .names, .hex, .rgb, .cmyk, .hsb, .hsl, .lab.
+
+    Parameters
+    ----------
+    palette_file : string
+        path to text file
+
+    Returns
+    -------
+    named tuple
+    
+    Example
+    -------
+    >>> from coolors_palettes import load_palette
+    >>> palette = load_palette(myColors.txt)
+    >>> print(palette.names)
+    >>> print(palette.rgb)
+    """
     try:
         with open(palette_file) as f:
             for line in f:
@@ -29,10 +49,30 @@ def load_palette(palette_file):
     except FileNotFoundError:
         print('File does not exist')
 
-def color_list(extended_palette_array):
-    """Returns multiple lists of values (hex, rgb, cmyk, names, hsb, hsl, lab"""   
+def color_list(extended_array):
+    """
+    Takes a palette tuple and returns a nemd tuple which contains multiple list
+    s of values (hex, rgb, cmyk, names, hsb, hsl, lab)
+
+    Parameters
+    ----------
+    extended_array : list
+        Extended Array obtained from palette text file.
+
+    Returns
+    -------
+    named tuple
+
+    Example
+    -------
+    >>> from coolors_palettes import load_palette, color_list
+    >>> palette = load_palette(myColors.txt)
+    >>> colors = color_list(palette.ext_arr)
+    >>> print(colors[0])
+    >>> print(colors[2])
+    """
     names, hexl, rgb, cmyk, hsb, hsl, lab = ([] for i in range(7))
-    for color in extended_palette_array:
+    for color in extended_array:
         names.append(color['name'])
         hexl.append('#' + color['hex'])
         rgb.append(color['rgb'])
@@ -41,15 +81,17 @@ def color_list(extended_palette_array):
         hsl.append(color['hsl'])
         lab.append(color['lab'])
     return names, hexl, rgb, cmyk, hsb, hsl, lab
-            
     
 if __name__ == "__main__":
     palette_dir = os.path.join(os.path.dirname(__file__), 'color_palettes')
-    palette = 'pastels01'
-    fp = os.path.join(palette_dir, palette + '.txt')
+    palette_file = 'pastels01.txt'
+    fp = os.path.join(palette_dir, palette_file)
     print(fp)
-    p = load_palette(fp)
-    pl = color_list(p)
-    print(pl.names)
-    print(pl.hex)
-    print(pl.cmyk)
+    
+    palette = load_palette(fp)
+    print(palette.names)
+    print(palette.rgb)
+    
+    colors = color_list(palette.ext_arr)
+    print(colors[0])
+    print(colors[2])
