@@ -21,7 +21,7 @@ print(p.lab)
 
 # Or in case you prefer plain lists...
 extended_array = p.ext_arr
-names, hexl, rgb, cmyk, hsb, hsl, lab = color_list(extended_array)
+names, hex, rgb, cmyk, hsb, hsl, lab = color_list(extended_array)
 print(names)
 print(hex)
 ```
